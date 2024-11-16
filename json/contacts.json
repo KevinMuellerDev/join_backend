@@ -1,0 +1,50 @@
+{
+    "circleColor": "user-color-nine",
+    "email": "c.mustermann@mm.de",
+    "id": 14,
+    "initials": "CM",
+    "lastname": "Mann",
+    "name": "Cathrin",
+    "phone": "017622345539",
+    "tasks":[
+        {
+            "category": "Task Category",
+            "title": "Task Title",
+            "description": "description text",
+            "duedate": 1721321739275,
+            "created": 1721321739275,
+            "priority": "medium",
+            "status": {
+                "await_feedback": false,
+                "in_progress": false,
+                "done": true
+            },
+            "assigned": [
+                {
+                    "id": 17,
+                    "name": "Felix Johann",
+                    "initials": "FJ",
+                    "circle_color": "user-color-eight"
+                },
+                {
+                    "id": 13,
+                    "name": "Kevin Müller",
+                    "initials": "KM",
+                    "circle_color": "user-color-seven"
+                },
+                {
+                    "id": 15,
+                    "name": "Niels Muster",
+                    "initials": "NM",
+                    "circle_color": "user-color-nine"
+                }
+            ],
+            "subtaks": [
+                {
+                    "tasks": "Task erstellen",
+                    "task_state": true
+                }
+            ]
+        }
+    ]
+}
