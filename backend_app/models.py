@@ -15,14 +15,6 @@ class Contacts(models.Model):
         return f'{self.name} {self.lastname}'
 
 
-class Subtask(models.Model):
-    task = models.TextField(max_length=500)
-    task_state = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.task
-
-
 class Tasks(models.Model):
     PRIO_CHOICES = {
         ('low', 'Low'),
@@ -39,12 +31,20 @@ class Tasks(models.Model):
     await_feedback = models.BooleanField(default=False)
     in_progress = models.BooleanField(default=False)
     done = models.BooleanField(default=False)
-    assigned = models.ManyToManyField(Contacts, related_name='contacts')
-    subtasks = models.ManyToManyField(Subtask, related_name='subtasks', blank=True)
+    assigned = models.ManyToManyField(Contacts, related_name='assigned')
     
 
     def __str__(self):
         return self.category
+
+
+class Subtask(models.Model):
+    task = models.ForeignKey(Tasks, related_name='subtasks',on_delete=models.CASCADE)
+    task_description = models.TextField(max_length=500)
+    task_state = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.task_description
 
 
 class Summary(models.Model):
