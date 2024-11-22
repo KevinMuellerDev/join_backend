@@ -3,17 +3,18 @@ from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 from backend_app.api.serializers import TaskSerializer, ContactsSerializer
 from backend_app.models import Tasks, Contacts
-from .permissions import IsStaffOrReadOnly
+from .permissions import ReadOnly,IsAuthenticated
 
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Tasks.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class TaskSummaryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Tasks.objects.all()
-    permission_classes=[IsStaffOrReadOnly]
+    permission_classes=[ReadOnly]
 
     def list(self, request):
         data = {
