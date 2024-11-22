@@ -31,18 +31,3 @@ class RegistrationSerializer(serializers.ModelSerializer):
         account.save()
         return account
 
-
-class LoginSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = ['username', 'password']
-        extra_kwargs = {
-            'password': {'write_only': True}
-        }
-
-        def create(self, validated_data):
-            if User.objects.filter(username=validated_data['username']).exists():
-                return validated_data
-            else:
-                raise serializers.ValidationError({'error:':'user or password are wrong or doesnt exist'})

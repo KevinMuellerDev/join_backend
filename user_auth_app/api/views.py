@@ -1,4 +1,4 @@
-from .serializers import RegistrationSerializer,LoginSerializer
+from .serializers import RegistrationSerializer
 from backend_app.models import Contacts
 from rest_framework import status
 from rest_framework.response import Response

@@ -14,7 +14,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
 class TaskSummaryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Tasks.objects.all()
-    permission_classes=[ReadOnly]
+    permission_classes=[IsAuthenticated]
 
     def list(self, request):
         data = {
