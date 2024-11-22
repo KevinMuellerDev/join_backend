@@ -82,7 +82,7 @@ class TaskSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['assigned'] = [
-            {'name': contact.name, 'last_name': contact.lastname, 'initials': contact.initials, 'circle_color': contact.circle_color} for contact in instance.assigned.all()
+            {'name': contact.name, 'initials': contact.initials, 'circle_color': contact.circle_color} for contact in instance.assigned.all()
         ]
 
         representation['subtasks'] = [
