@@ -5,14 +5,13 @@ from django.db import models
 
 class Contacts(models.Model):
     name = models.CharField(max_length=255)
-    lastname = models.CharField(max_length=255)
     initials = models.CharField(max_length=2)
     email = models.EmailField()
-    phone = models.DecimalField(decimal_places=0, max_digits=13)
-    circle_color = models.CharField(max_length=30)
+    phone = models.DecimalField(decimal_places=0, max_digits=13, null=True, blank=True)
+    circle_color = models.CharField(max_length=30,null=True,blank=True)
     
     def __str__(self):
-        return f'{self.name} {self.lastname}'
+        return f'{self.name}'
 
 
 class Tasks(models.Model):

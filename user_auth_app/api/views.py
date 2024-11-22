@@ -1,9 +1,11 @@
 from .serializers import RegistrationSerializer,LoginSerializer
+from backend_app.models import Contacts
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
+import random
 
 class RegistrationView(APIView):
     permission_classes=[AllowAny]
@@ -20,6 +22,9 @@ class RegistrationView(APIView):
                 'username':saved_account.username,
                 'email':saved_account.email
             }
+            r = lambda: random.randint(0,255)
+            color = '#%02X%02X%02X' % (r(),r(),r())
+            Contacts.objects.create(name=saved_account.username, email=saved_account.email, initials=saved_account.username[0][0].upper(),circle_color=color)
         else:
             data=serializer.errors
 
