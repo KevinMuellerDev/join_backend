@@ -1,4 +1,4 @@
-from .serializers import RegistrationSerializer
+from .serializers import RegistrationSerializer,LoginSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
@@ -30,9 +30,11 @@ class CustomLoginView(ObtainAuthToken):
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
+        statusCode=0
         data = {}
-
+        print('sieht man mich?')
         if serializer.is_valid():
+            print('bin trotzdem da')
             user = serializer.validated_data['user']
             token, created = Token.objects.get_or_create(user=user)
 
@@ -41,6 +43,8 @@ class CustomLoginView(ObtainAuthToken):
                 'username': user.username,
                 'email': user.email
             }
+            statusCode=200
         else:
             data = serializer.errors
-        return Response(data)    
+            statusCode=400
+        return Response(data,status=statusCode)    
