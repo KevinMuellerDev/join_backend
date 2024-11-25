@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 class ContactsSerializer(serializers.ModelSerializer):
     assigned = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(),required=False, allow_null=True)
     class Meta:
         model = Contacts
         fields = ['id', 'name', 'initials',
