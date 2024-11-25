@@ -1,14 +1,16 @@
 from rest_framework import serializers, status
 from backend_app.models import Tasks, Contacts, Summary, Subtask
+from django.contrib.auth.models import User
+
 
 
 class ContactsSerializer(serializers.ModelSerializer):
     assigned = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     class Meta:
         model = Contacts
         fields = ['id', 'name', 'initials',
-                  'email', 'phone', 'circle_color', 'assigned']
+                  'email', 'phone', 'circle_color', 'assigned','user']
 
 
 class SubtaskSerializer(serializers.ModelSerializer):
