@@ -1,6 +1,7 @@
 from rest_framework import serializers, status
 from backend_app.models import Tasks, Contacts, Summary, Subtask
 from django.contrib.auth.models import User
+import random
 
 
 
@@ -11,6 +12,14 @@ class ContactsSerializer(serializers.ModelSerializer):
         model = Contacts
         fields = ['id', 'name', 'initials',
                   'email', 'phone', 'circle_color', 'assigned','user']
+    
+    def create(self, validated_data):
+        
+        def r(): return random.randint(0, 255)
+        color = '#%02X%02X%02X' % (r(), r(), r())
+        validated_data['circle_color'] = color
+        contact=Contacts.objects.create(**validated_data)
+        return contact
 
 
 class SubtaskSerializer(serializers.ModelSerializer):
