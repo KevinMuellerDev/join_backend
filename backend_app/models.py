@@ -20,7 +20,7 @@ class Tasks(models.Model):
     PRIO_CHOICES = {
         ('low', 'Low'),
         ('medium', 'Medium'),
-        ('high', 'High')
+        ('urgent', 'Urgent')
     }
     category = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
