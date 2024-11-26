@@ -19,8 +19,8 @@ class TaskSummaryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     permission_classes=[IsAuthenticated]
 
     def list(self, request):
-        urgent_tasks = self.queryset.filter(priority="high")
-        urgent_tasks_upcoming = urgent_tasks.filter(duedate__gte=datetime.now()).order_by('duedate')
+        urgent_tasks = self.queryset.filter(priority="urgent")
+        urgent_tasks_upcoming = urgent_tasks.filter(duedate__gte=datetime.now().date()).order_by('duedate')
         next_task = urgent_tasks_upcoming.first()
         date_obj = next_task.duedate
         locale.setlocale(locale.LC_TIME, "de_DE.UTF-8")
