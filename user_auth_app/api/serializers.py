@@ -19,7 +19,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
     def validate_username(self, value):
         if not re.match(r'^[\w\s]+$', value):
             raise serializers.ValidationError(
-                {"error": "Der Benutzername darf nur Buchstaben, Zahlen und Leerzeichen enthalten."}
+                {"error": "username isn't allowed to contain other than Characters, numbers and whitespaces"}
             )
         return value
 

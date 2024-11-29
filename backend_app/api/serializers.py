@@ -4,21 +4,22 @@ from django.contrib.auth.models import User
 import random
 
 
-
 class ContactsSerializer(serializers.ModelSerializer):
     assigned = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(),required=False, allow_null=True)
+    user = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), required=False, allow_null=True)
+
     class Meta:
         model = Contacts
         fields = ['id', 'name', 'initials',
-                  'email', 'phone', 'circle_color', 'assigned','user']
-    
+                  'email', 'phone', 'circle_color', 'assigned', 'user']
+
     def create(self, validated_data):
-        
+
         def r(): return random.randint(0, 255)
         color = '#%02X%02X%02X' % (r(), r(), r())
         validated_data['circle_color'] = color
-        contact=Contacts.objects.create(**validated_data)
+        contact = Contacts.objects.create(**validated_data)
         return contact
 
 
@@ -73,35 +74,39 @@ class TaskSerializer(serializers.ModelSerializer):
         if assigned_data is not None:
             instance.assigned.set(assigned_data)
 
-        if subtasks_data:
-            for subtask_data in subtasks_data:
-                subtask_instance = instance.subtasks.filter(
-                    task_description=subtask_data.get('task_description')
-                ).first()
+        existing_subtasks = {subtask.id: subtask for subtask in instance.subtasks.all()}
+        updated_subtasks_ids = []  
 
-                if subtask_instance:
-                    # Subtask aktualisieren, wenn sie existiert
-                    subtask_instance.task_state = subtask_data.get(
-                        'task_state', subtask_instance.task_state)
-                    subtask_instance.save()
-                else:
-                    # Neue Subtask erstellen
-                    Subtask.objects.create(task=instance, **subtask_data)
+        for subtask_data in subtasks_data:
+            subtask_id = subtask_data.get('id')
+
+            if subtask_id and subtask_id in existing_subtasks:
+                subtask_instance = existing_subtasks[subtask_id]
+                subtask_instance.task_description = subtask_data.get(
+                    'task_description', subtask_instance.task_description)
+                subtask_instance.task_state = subtask_data.get(
+                    'task_state', subtask_instance.task_state)
+                subtask_instance.save()
+                updated_subtasks_ids.append(subtask_id)
+            else:
+                Subtask.objects.create(task=instance, **subtask_data)
+
+        for subtask_id, subtask_instance in existing_subtasks.items():
+            if subtask_id not in updated_subtasks_ids:
+                subtask_instance.delete()
 
         return instance
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['assigned'] = [
-            {'id':contact.id, 'name': contact.name, 'initials': contact.initials, 'circle_color': contact.circle_color} for contact in instance.assigned.all()
+            {'id': contact.id, 'name': contact.name, 'initials': contact.initials, 'circle_color': contact.circle_color} for contact in instance.assigned.all()
         ]
 
         representation['subtasks'] = [
-            {'task_description': subtask.task_description,
+            {'id': subtask.id, 'task_description': subtask.task_description,
                 'task_state': subtask.task_state}
             for subtask in instance.subtasks.all()
         ]
 
         return representation
-
-
