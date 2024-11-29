@@ -32,7 +32,7 @@ class TaskSummaryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             "in_progress": self.queryset.filter(in_progress=True).count(),
             "await_feedback": self.queryset.filter(await_feedback=True).count(),
             "done": self.queryset.filter(done=True).count(),
-            "urgent":self.queryset.filter(priority="high").count(),
+            "urgent":self.queryset.filter(priority="urgent").count(),
             "urgent_date":formatted_date_de
         }
 
