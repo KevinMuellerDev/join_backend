@@ -1,9 +1,11 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+import re
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
     repeated_password = serializers.CharField(write_only=True)
+    username = serializers.CharField(max_length=150, validators=[])
 
     class Meta:
         model = User
@@ -13,6 +15,13 @@ class RegistrationSerializer(serializers.ModelSerializer):
                 'write_only': True
             }
         }
+
+    def validate_username(self, value):
+        if not re.match(r'^[\w\s]+$', value):
+            raise serializers.ValidationError(
+                {"error": "Der Benutzername darf nur Buchstaben, Zahlen und Leerzeichen enthalten."}
+            )
+        return value
 
     def save(self):
         pw = self.validated_data['password']
@@ -26,8 +35,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
                 {'error': 'email already exists'})
 
         account = User(
-            email=self.validated_data['email'], username=self.validated_data['username'],)
+            email=self.validated_data['email'],
+            username=self.validated_data['username'],)
+        
         account.set_password(pw)
         account.save()
         return account
-
