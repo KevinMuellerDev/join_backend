@@ -9,7 +9,7 @@ Make sure the following software is installed:
 - **Python** (version 3.8 or higher)
 - **pip** (Python package manager)
 - **virtualenv** (recommended)
-- **Database** (e.g., SQLite, PostgreSQL, MySQL)
+- **Database** (SQLite)
 
 ## Installation
 
