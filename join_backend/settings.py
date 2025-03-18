@@ -95,6 +95,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://sub.example.com",
     "http://localhost:5500",
     "http://127.0.0.1:5500",
+    "https://join.kevin-mueller-dev.de"
 ]
 
 WSGI_APPLICATION = 'join_backend.wsgi.application'
