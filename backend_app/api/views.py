@@ -21,8 +21,14 @@ class TaskSummaryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     def list(self, request):
         urgent_tasks = self.queryset.filter(priority="urgent")
         urgent_tasks_upcoming = urgent_tasks.filter(duedate__gte=datetime.now().date()).order_by('duedate')
-        next_task = urgent_tasks_upcoming.first()
-        date_obj = next_task.duedate
+        if urgent_tasks_upcoming.exists():
+            next_task = urgent_tasks_upcoming.first()
+        else:
+            next_task = urgent_tasks.order_by('duedate').first()
+        if next_task:
+            date_obj = next_task.duedate
+        else:
+            next_task = []
         locale.setlocale(locale.LC_TIME, "de_DE.UTF-8")
         formatted_date_de = date_obj.strftime("%B %d, %Y")
 
