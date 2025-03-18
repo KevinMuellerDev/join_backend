@@ -29,7 +29,7 @@ class TaskSummaryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             date_obj = next_task.duedate
         else:
             next_task = []
-        locale.setlocale(locale.LC_TIME, "de_DE.UTF-8")
+        #locale.setlocale(locale.LC_TIME, "de_DE.UTF-8")
         formatted_date_de = date_obj.strftime("%B %d, %Y")
 
         data = {
